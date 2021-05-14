@@ -10,6 +10,7 @@ const uploadKeys = [
   'uploaded_at',
   'app_version',
   'app_id',
+  'app_url',
   'custom_id',
 ]
 
@@ -65,7 +66,7 @@ const logResponse = (items=noOpArr) => {
 const recent = async (args=noOpObj) => {
   const { id, limit, log } = args
 
-  log && Logger.info(`Getting recent uploads...`)
+  log && Logger.info(`Getting BrowserStack Apps...`)
 
   const resp = await apiGet({
     params: limit ? { limit } : noOpObj,
