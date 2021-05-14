@@ -1,45 +1,89 @@
-const fs = require('fs')
-const path = require('path')
-const axios = require('axios')
 const FormData = require('form-data')
-const { throwError } = require('./throwError')
-const { deepMerge, isEmpty, limbo, noOpObj, pickKeys } = require('@keg-hub/jsutils')
+const axios = require('axios')
+const fs = require('fs')
 
-const defReq = {
-  url: '',
-  method: 'GET',
-  headers: {
-    Accept: 'application/json',
-    'content-type': 'application/json',
-  },
-  responseType: 'json',
+const defaultReqConfig = {
+  maxContentLength: Infinity,
+  maxBodyLength: Infinity,
 }
 
-const authToBase64 = (user, pass) => {
-  const basic = pass ? `${user}:${pass}` : user
-  const encoded = Buffer.from(basic, 'utf8').toString('base64')
-
-  return { Authorization: `Basic ${encoded}` }
+const buildForm = data => {
+  const form = new FormData()
+  Object.entries(data).map(
+    ([key, value]) => form.append(key, value)
+  )
+  return form
 }
 
+const getRequestConfig = (form, token) => ({
+  ...defaultReqConfig,
+  headers: getHeaders(form, token)
+})
+
+const getHeaders = (form, token) => ({
+  ...form.getHeaders(),
+  ...(token && { Authorization: `Bearer ${token}`})
+})
 
 /**
- * Allows setting global auth for the browserstack API
- * @external
- * @type {function}
- * @param {Object} user - User for authorizing with browserstack
- * @param {Object} pass - Password for the user
+ * Get the data for the filePath
+ * @param {Object} options
+ * @param {Object} extra 
+ * @returns 
  */
-const setAuth = (user, pass) => {
-  Object.assign(defReq, { headers: authToBase64(user, pass) })
+const getBinaryData = ({filePath, token }, extra) => {
+  const form = buildForm({ 
+    file: fs.createReadStream(filePath),
+    ...extra
+  })
+
+  return {
+    data: form,
+    requestConfig: getRequestConfig(form, token) 
+  }
+}
+
+/**
+ * Get the data for the url
+ * @param {Object} options
+ * @param {Object} extra 
+ * @returns 
+ */
+const getURLData = ({ url, token }, extra) => {
+  const form = buildForm({
+    url,
+    ...extra
+  })
+
+  return {
+    data: form,
+    requestConfig: getRequestConfig(form, token)
+  }
 }
 
 
-const apiPost = async () => {
+const post = async ({ token, version='1', filePath, url, platform }) => {
+  const endpoint = `https://${token}@api.appetize.io/v${version}/apps`
 
+  const extra = { platform }
+
+  const { data, requestConfig } = filePath 
+    ? getBinaryData({ filePath, token }, extra)
+    : url
+      ? getURLData({ url, token }, extra)
+      : {}
+
+  console.log('Uploading....',  { requestConfig, endpoint })
+  // return Promise.resolve({})
+
+  try {
+    return await axios.post(endpoint, data, requestConfig)
+  }
+  catch (err) {
+    console.error(err)
+  }
 }
 
 module.exports = {
-  setAuth,
-  apiPost
+  post
 }

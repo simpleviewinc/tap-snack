@@ -1,15 +1,18 @@
-const path = require('path')
-const { apiPost } = require('./api')
-const { throwError } = require('./throwError')
-const { noOpObj } = require('@keg-hub/jsutils')
-const { Logger } = require('@keg-hub/cli-utils')
+const api = require('./api')
 
-
-const upload = async ({ file }) => {
-
-  return await apiPost({
-
-  })
+/**
+ * 
+ * @param {Object} options
+ * @param {String} options.filePath - path to zipped simulator build
+ * @returns 
+ */
+const upload = async ({ filePath, platform, token, url }) => {
+  return await api.post({
+    token,
+    platform,
+    filePath,
+    url
+  }, token)
 }
 
 module.exports = {

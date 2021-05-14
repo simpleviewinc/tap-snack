@@ -1,12 +1,6 @@
-const { upload, setAuth } = require('../libs/appetize')
-const rootLoc = path.join(__dirname, '../../')
+require('dotenv').config()
 
-// TODO: update this path to point to an Appetize compatible build folder
-// See step one below
-const ipaBuildFolder = path.join(rootLoc, './build/tap-vaa-apt')
-
-const log = true
-const id = 'test-custom-id'
+const { upload } = require('../libs/appetize')
 
 /**
  * Steps to be automated
@@ -31,13 +25,20 @@ const id = 'test-custom-id'
  * 
  */
 
-;(async () => {
-  setAuth(`<appetize-api-token>`)
+const {
+  BUILD_PATH,
+  PLATFORM='ios',
+  TOKEN,
+  URL,
+} = process.env
 
-  await upload({
-    id,
-    log,
-    file: ipaBuildFolder
+;(async () => {
+  const response = await upload({
+    url: URL,
+    filePath: BUILD_PATH,
+    platform: PLATFORM,
+    token: TOKEN
   })
 
+  console.log('RESPONSE: \n', JSON.stringify(response.data, null, 2))
 })()
