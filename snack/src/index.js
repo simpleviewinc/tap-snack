@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Container } from './components'
+import { RootContainer } from './components'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Container />
+    <RootContainer />
   </React.StrictMode>,
   document.getElementById('root')
 )
