@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  vaa:
+    environment:
+      - CHOKIDAR_USEPOLLING
+      - DOC_APP_PATH
+      - DOC_BUILD_PATH
+      - GIT_APP_BRANCH
+      - GIT_APP_URL
+      - KEG_DOCKER_EXEC
+      - NODE_ENV
