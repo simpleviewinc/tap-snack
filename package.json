@@ -8,6 +8,7 @@
     "apt:test": "node ./scripts/apt-test.js",
     "bs:test": "node ./scripts/bs-test.js",
     "copy:build": "cp -R ./build /keg/core-build",
+    "task": "node ./tasks/runTask.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
