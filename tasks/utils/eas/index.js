@@ -1,3 +1,1 @@
-module.exports = {
-  ...require('./eas'),
-}
+module.exports = require('./eas')

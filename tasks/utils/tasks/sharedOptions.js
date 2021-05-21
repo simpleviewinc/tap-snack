@@ -22,17 +22,21 @@ setSharedOptions({
     },
     android: {
       alias: [ 'and' ],
-      description: 'Deploy an Android build',
-      example: 'deploy --android',
+      description: 'Deploy an Android build. Value should be an android eas profile from the eas.json config.',
+      example: 'deploy --android staging',
+      type: 'string',
+      default: 'preview'
     },
     ios: {
       alias: [ 'apple' ],
-      description: 'Deploy an IOS build',
-      example: 'deploy --ios',
+      description: 'Deploy an IOS build. Value should be an IOS eas profile from the eas.json config.',
+      example: 'deploy --ios production',
+      type: 'string',
+      default: 'preview'
     },
     profile: {
       alias: [ 'prof', 'pr' ],
-      description: 'EAS build profile to use',
+      description: 'EAS build profile to use when ios and android options are not set',
       example: 'deploy --profile production',
       default: 'preview'
     },
@@ -47,5 +51,36 @@ setSharedOptions({
       example: 'deploy --tap <linked-tap-name>',
       enforced: true
     },
+    name: {
+      description: 'Name used to validate the app. Uses the tap options value when not set',
+      example: 'deploy --name custom app build name',
+    },
+    cache: {
+      description: 'Use cache from a previous build.',
+      example: 'deploy --cache',
+      default: true,
+    },
+    local: {
+      description: 'Run the build locally [experimental]',
+      example: 'deploy --local',
+      default: false,
+    },
+    interactive: {
+      description: 'Toggle interactive mode when building the app',
+      example: 'deploy --no-interactive',
+      default: true,
+    },
+    credentials: {
+      alias: [ 'creds' ],
+      description: 'Validate build credentials before building',
+      example: 'deploy --no-credentials',
+      default: true,
+    },
+    configuration: {
+      alias: [ 'config', 'conf' ],
+      description: 'Validate project configuration before building',
+      example: 'deploy --no-configuration',
+      default: true,
+    }
   }
 }, true)
