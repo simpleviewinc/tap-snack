@@ -58,6 +58,6 @@ module.exports = {
         description: 'Filter the returned items by status',
         example: ''
       },
-    }, ['android', 'ios', 'platform', 'location'], 'deploy'),
+    }, ['android', 'ios', 'platform', 'location'], 'eas'),
   }
 }

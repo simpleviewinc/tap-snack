@@ -1,29 +1,8 @@
 
 const { eas } = require('../../utils/eas')
-const { exists } = require('@keg-hub/jsutils')
 const { getPlatforms } = require('../../utils/getPlatforms')
 const { resolveTapRoot } = require('../../utils/resolveTapRoot')
 const { sharedOptions } = require('@keg-hub/cli-utils')
-
-
-const buildWithEAS = async ({ ios, android, name, branch, location, params }) => {
-  const appName = branch ? `${name}-${branch}` : name
-
-  // ----- Upload to eas to be built
-  // ios && await eas.build({
-  //   params,
-  //   profile: ios,
-  //   platform: 'ios',
-  //   location,
-  // })
-
-  // android && await eas.build({
-  //   params,
-  //   profile: android,
-  //   platform: 'android',
-  //   location,
-  // })
-}
 
 /**
  * Builds and mobile app using eas-cli
@@ -41,15 +20,25 @@ const buildApp = async args => {
   const { params } = args
   const { name, branch, tap } = params
 
+  // Get the platform and profiles
   const { android, ios } = getPlatforms(params)
+
+  // Get the tap root, so we can run the command from there 
   const tapRoot = resolveTapRoot(params)
 
-  await buildWithEAS({
-    ios,
-    android,
+  // Build the app with the eas-cli for IOS
+  ios && await eas.build({
     params,
-    branch,
-    name: name || tap,
+    profile: ios,
+    platform: 'ios',
+    location: tapRoot,
+  })
+
+  // Build the app with the eas-cli for Android
+  android && await eas.build({
+    params,
+    profile: android,
+    platform: 'android',
     location: tapRoot,
   })
 
@@ -62,6 +51,6 @@ module.exports = {
     action: buildApp,
     example: 'eas build <options>',
     description : 'Builds production builds of a tap',
-    options: sharedOptions(`deploy`, {}, undefined, 'deploy')
+    options: sharedOptions(`deploy`, {}, undefined, 'eas')
   }
 }

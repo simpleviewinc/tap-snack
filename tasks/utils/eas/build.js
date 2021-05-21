@@ -1,5 +1,6 @@
-const { runCmd, Logger, error, addFlag } = require('@keg-hub/cli-utils')
+const { easCli } = require('./commands')
 const { noOpObj, noOpArr } = require('@keg-hub/jsutils')
+const { Logger, error, addFlag } = require('@keg-hub/cli-utils')
 
 /**
  * Builds the params to pass on to the eas build command
@@ -37,10 +38,9 @@ const build = async (args) => {
   ;(!platform || !profile) &&
     error.throwError(`Eas CLI requires a platform (IOS | Android ) and profile!`)
 
-  Logger.info(`Build ${platform} with profile ${profile}...`)
+  Logger.pair(`Build ${platform} with profile =>`, profile)
 
-  return await runCmd(
-    `eas`,
+  return await easCli(
     [ 'build', `-p`, platform, `--profile`, profile, ...getBuildArgs(params) ],
     options,
     location

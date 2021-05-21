@@ -1,5 +1,6 @@
-const { runCmd, Logger, error, addFlag, addParam } = require('@keg-hub/cli-utils')
+const { easCli } = require('./commands')
 const { noOpObj } = require('@keg-hub/jsutils')
+const { Logger, addParam } = require('@keg-hub/cli-utils')
 
 /**
  * Builds the params to pass on to the eas build command
@@ -32,8 +33,7 @@ const list = async (args) => {
 
   Logger.info(`Getting builds for platform ${platform}...`)
 
-  return await runCmd(
-    `eas`,
+  return await easCli(
     [ 'build:list', `--platform`, platform, ...getListArgs(params) ],
     options,
     location

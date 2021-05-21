@@ -1,7 +1,7 @@
 const { setSharedOptions } = require('@keg-hub/cli-utils')
 
 setSharedOptions({
-  deploy: {
+  eas: {
     platform: {
       alias: [ 'plf', 'type' ],
       allow: ['android', 'ios', 'all'],
@@ -26,14 +26,12 @@ setSharedOptions({
       description: 'Deploy an Android build. Value should be an android eas profile from the eas.json config.',
       example: 'deploy --android staging',
       type: 'string',
-      default: 'preview'
     },
     ios: {
       alias: [ 'apple' ],
       description: 'Deploy an IOS build. Value should be an IOS eas profile from the eas.json config.',
       example: 'deploy --ios production',
       type: 'string',
-      default: 'preview'
     },
     profile: {
       alias: [ 'prof', 'pr' ],
