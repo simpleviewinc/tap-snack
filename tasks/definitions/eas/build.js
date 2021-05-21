@@ -51,6 +51,22 @@ module.exports = {
     action: buildApp,
     example: 'eas build <options>',
     description : 'Builds production builds of a tap',
-    options: sharedOptions(`deploy`, {}, undefined, 'eas')
+    options: sharedOptions(`eas build`, {}, [
+      'platform',
+      'build',
+      'android',
+      'ios',
+      'profile',
+      'location',
+      'tap',
+      'name',
+      'cache',
+      'local',
+      'interactive',
+      'credentials',
+      'configuration'
+    ], 'eas')
   }
 }
+
+

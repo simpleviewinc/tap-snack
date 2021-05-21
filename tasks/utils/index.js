@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('./tasks'),
-  ...require('./resolveTapRoot'),
   ...require('./getPlatforms'),
+  ...require('./resolveTapRoot'),
+  ...require('./sharedOptions'),
 }

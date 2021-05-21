@@ -1,5 +1,5 @@
 // Set the shared options for the tasks
-require('../utils/tasks/sharedOptions')
+require('../utils/sharedOptions')
 
 const eas = require('./eas')
 

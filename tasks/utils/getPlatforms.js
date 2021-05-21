@@ -1,4 +1,4 @@
-const { isBool } = require('@keg-hub/jsutils')
+const { isBool, exists } = require('@keg-hub/jsutils')
 
 /**
  * Gets the eas-cli profile to use for the platform
@@ -8,7 +8,7 @@ const { isBool } = require('@keg-hub/jsutils')
  * @returns {string} - Profile to use when building the app
  */
 const getProfile = (platform, profile) => (
-  platform && isBool(platform) ? profile : platform
+  !exists(platform) || isBool(platform) ? profile : platform
 )
 
 /**
