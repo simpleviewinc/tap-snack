@@ -5,19 +5,8 @@ const { getPlatforms } = require('../../utils/getPlatforms')
 const { resolveTapRoot } = require('../../utils/resolveTapRoot')
 const { sharedOptions } = require('@keg-hub/cli-utils')
 
-const onStdOut = urls => {
-  return (data) => {
-    console.log(`--------- data ---------`)
-    console.log(data)
-    // TODO parse urls from data
-    // urls.ios = parsedIOSUrl
-    // urls.android = parsedAndUrl
-  }
-}
-
 
 const buildWithEAS = async ({ ios, android, name, branch, location, params }) => {
-  const urls = { ios: false, android: false }
   const appName = branch ? `${name}-${branch}` : name
 
   // ----- Upload to eas to be built
@@ -26,7 +15,6 @@ const buildWithEAS = async ({ ios, android, name, branch, location, params }) =>
   //   profile: ios,
   //   platform: 'ios',
   //   location,
-  //   events: { onStdOut: onStdOut(urls) }
   // })
 
   // android && await eas.build({
@@ -34,12 +22,11 @@ const buildWithEAS = async ({ ios, android, name, branch, location, params }) =>
   //   profile: android,
   //   platform: 'android',
   //   location,
-  //   events: { onStdOut(urls) }
   // })
 }
 
 /**
- * Builds VisitApps App
+ * Builds and mobile app using eas-cli
  * @param {Object} args - arguments passed from the runTask method
  * @param {string} args.command - Root task name
  * @param {Object} args.tasks - All registered tasks of the CLI
@@ -50,7 +37,7 @@ const buildWithEAS = async ({ ios, android, name, branch, location, params }) =>
  *
  * @returns {void}
  */
-const deployApp = async args => {
+const buildApp = async args => {
   const { params } = args
   const { name, branch, tap } = params
 
@@ -69,12 +56,12 @@ const deployApp = async args => {
 }
 
 module.exports = {
-  deploy: {
-    name: 'deploy',
+  build: {
+    name: 'build',
     alias: ['bld', 'bl'],
-    action: deployApp,
-    example: 'keg tap deploy <options>',
-    description : 'Builds production builds of a tap with eas then deploys the builds to appetize',
+    action: buildApp,
+    example: 'eas build <options>',
+    description : 'Builds production builds of a tap',
     options: sharedOptions(`deploy`, {}, undefined, 'deploy')
   }
 }

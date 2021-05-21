@@ -4,6 +4,7 @@ setSharedOptions({
   deploy: {
     platform: {
       alias: [ 'plf', 'type' ],
+      allow: ['android', 'ios', 'all'],
       description: 'Name of the platform to be built. (android, ios, all)',
       example: 'deploy --platform and',
       default: 'all'
