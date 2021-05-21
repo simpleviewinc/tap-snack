@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('./android'),
-  ...require('./ios'),
+  ...require('./tasks'),
+  ...require('./resolveTapRoot'),
   ...require('./getPlatforms'),
 }

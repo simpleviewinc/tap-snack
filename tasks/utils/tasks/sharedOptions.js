@@ -36,5 +36,16 @@ setSharedOptions({
       example: 'deploy --profile production',
       default: 'preview'
     },
+    location: {
+      alias: [ 'loc', 'path' ],
+      description: 'Location of the tap on the host machine to be deployed. Ignored when tap option is passed',
+      example: 'deploy --location path/to/tap',
+      enforced: true
+    },
+    tap: {
+      description: 'Name of the tap to be deployed. Must be a keg-cli linked tap.',
+      example: 'deploy --tap <linked-tap-name>',
+      enforced: true
+    },
   }
 }, true)

@@ -1,6 +1,6 @@
 
-const { deployIOS, deployAnd, getPlatforms } = require('../../utils')
-const { sharedOptions } = require('@keg-hub/cli-utils')
+const { deployIOS, deployAnd, getPlatforms, resolveTapRoot } = require('../../utils')
+const { sharedOptions, getAppRoot } = require('@keg-hub/cli-utils')
 
 /**
  * Builds VisitApps App
@@ -17,8 +17,14 @@ const { sharedOptions } = require('@keg-hub/cli-utils')
 const deployApp = async args => {
   const { params } = args
   const { android, ios } = getPlatforms(params)
-  android && await deployAnd(args)
-  ios && await deployIOS(args)
+  const tapRoot = resolveTapRoot(params)
+
+  console.log(`--------- tapRoot ---------`)
+  console.log(tapRoot)
+
+  console.log(`--------- params ---------`)
+  console.log(params)
+
 }
 
 module.exports = {
