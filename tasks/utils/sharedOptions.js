@@ -1,5 +1,8 @@
 const { setSharedOptions } = require('@keg-hub/cli-utils')
 
+/**
+ * Creates an eas group for task options to allow sharing the options between tasks
+ */
 setSharedOptions({
   eas: {
     platform: {
