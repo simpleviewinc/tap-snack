@@ -38,6 +38,4 @@ env:
 
   # Git tap url in github
   GIT_APP_URL: https://github.com/simpleviewinc/tap-snack.git
-  # GIT_APP_BRANCH: master
-  GIT_APP_BRANCH: VIS-1101-docker-img
-  
+  GIT_APP_BRANCH: master

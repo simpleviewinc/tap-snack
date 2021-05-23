@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "doc:setup": "node ./scripts/dockerSetup.js",
     "apt:test": "node ./scripts/apt-test.js",
     "bs:test": "node ./scripts/bs-test.js",
     "copy:build": "cp -R ./build /keg/core-build",
