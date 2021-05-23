@@ -9,14 +9,16 @@ env:
   KEG_MUTAGEN_FILE: "{{ cli.taps.snack.path }}/container/mutagen.yml"
   KEG_COMPOSE_DEFAULT: "{{ cli.taps.snack.path }}/container/docker-compose.yml"
   KEG_CONTEXT_PATH: "{{ cli.taps.snack.path }}"
-  
 
   # --- DOCKER ENV CONTEXT --- #
 
+  # Turn off auto-building the keg-base image
+  KEG_FROM_BASE: false
   # Image to use when building snack
   KEG_BASE_IMAGE: node:12.19-alpine
   # Should the base image be pulled from the configured docker provider 
   # Will not automatically add the provider info to the KEG_BASE_IMAGE
+  # Without this the base image would be ghcr.io/simpleviewinc/node:12.19-alpine
   KEG_BASE_PROVIDER: false
 
   # Image to use when running snack
@@ -26,7 +28,7 @@ env:
   DOC_APP_PATH: /keg/tap
   DOC_BUILD_PATH: /keg/tap-build
   KEG_EXEC_CMD: start
-  KEG_PROXY_PORT: 19006
+  KEG_PROXY_PORT: 3000
 
   # --- GENERAL CONTEXT ENVs --- #
 
