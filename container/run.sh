@@ -19,4 +19,15 @@ fi
 # Serve the app bundle in development environemnts
 echo $"[ KEG-CLI ] Running development server!" >&2
 cd $DOC_APP_PATH
+
+# Try to regenerate the app name map before starting the app
+[[ "$APT_API_TOKEN" ]] && yarn task apt generate
+
+# Location of the Appetize app name map
+APP_MAP_CONFIG="./configs/aptNameMap.json"
+
+# If the app map config does not exists, create a stub for it
+[[ ! -f "$APP_MAP_CONFIG" ]] && echo "{}" > $APP_MAP_CONFIG
+
+# Start the app
 [[ -z "$KEG_EXEC_CMD" ]] && yarn start || yarn $KEG_EXEC_CMD

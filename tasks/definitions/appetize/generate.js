@@ -1,46 +1,8 @@
-
-const { deepMerge, get } = require('@keg-hub/jsutils')
+const { deepMerge } = require('@keg-hub/jsutils')
 const { sharedOptions, Logger } = require('@keg-hub/cli-utils')
 const { writeAppMap } = require('../../utils/appetize/writeAppMap')
 const { listAllApps } = require('../../utils/appetize/listAllApps')
-
-/**
- * Logs a warning when an Appetize app is missing a name
- * @param {Array} apps - All apps returned from the Appetize API 
- * @param {boolean} log - Logs output as the task runs
- *
- * @returns {Object} - Contains map of app names to appetize ids
- */
-const logMissingName = (map, log, publicKey) => {
-  log &&
-    Logger.highlight(
-      Logger.colors.yellow(`Appetize app with publicKey`),
-      publicKey,
-      Logger.colors.yellow(`is missing an app name, skipping!`)
-    )
-
-  return map
-}
-
-/**
- * Generates a map of appetize app public keys to tap names
- * @param {Array} apps - All apps returned from the Appetize API 
- * @param {boolean} log - Logs output as the task runs
- *
- * @returns {Object} - Contains map of app names to appetize ids
- */
-const mapNameToApp = (apps, log) => {
-  return apps.reduce((map, app) => {
-    const name = get(app, 'name', get(app, 'meta.name'))
-
-    if(!name) return logMissingName(map, log, app.publicKey)
-
-    map[name] = map[name] || {}
-    map[name][app.publicKey] = app
-
-    return map
-  }, {})
-}
+const { mapNameToApp } = require('../../utils/appetize/mapNameToApp')
 
 /**
  * Generates a map of appetize app public keys to tap names
@@ -58,9 +20,9 @@ const generateMap = async args => {
   const { params } = args
   const { log } = params
 
-  const apps = await listAllApps(deepMerge(args, {
-    params: { log: false }
-  }))
+  const apps = await listAllApps(
+    deepMerge(args, { params: { log: false }})
+  )
 
   const mappedApps = mapNameToApp(apps, log)
 
