@@ -11,9 +11,6 @@ const { DOC_APP_PATH } = process.env
   DOC_APP_PATH &&
     error.throwExitError({ stack: 'This script must be run inside a docker container' })
 
-  // Install deps
-  await yarn(`install`)
-
   // Build the snack app
   await yarn(`build`)
 

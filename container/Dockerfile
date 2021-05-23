@@ -23,6 +23,7 @@ ENV GIT_APP_BRANCH=$GIT_APP_BRANCH
 
 RUN git clone --single-branch --branch $GIT_APP_BRANCH $GIT_APP_URL $DOC_APP_PATH; \
     cd $DOC_APP_PATH; \
+    yarn install; \
     yarn doc:setup
 
 # Set the current directory to tap repo
