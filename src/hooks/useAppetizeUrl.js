@@ -1,8 +1,13 @@
 import { useMemo } from 'react'
 import { useQueryParams }  from './useQueryParams'
+import { getAppFromMap } from '../utils/appMap/getAppFromMap'
 
 const appetizeUrl = `https://appetize.io/embed`
 const aptPublicKey = process.env.REACT_APP_APT_PUBLIC_KEY
+
+const resolvePublicKey = (publicKey, app) => {
+  return publicKey || aptPublicKey || getAppFromMap(app)
+}
 
 /**
  * Builds an Appetize embed url
@@ -13,21 +18,23 @@ const aptPublicKey = process.env.REACT_APP_APT_PUBLIC_KEY
  */
 export const useAppetizeUrl = (props) => {
   const {
-    publicKey=aptPublicKey,
+    publicKey,
     ...altParams
   } = props
 
+
   const [params, setParams ] = useQueryParams(altParams)
+  const appKey = resolvePublicKey(publicKey, params.app)
 
   const builtUrl = useMemo(() => {
-    return publicKey &&
-      `${appetizeUrl}/${publicKey}?` + 
+    return appKey &&
+      `${appetizeUrl}/${appKey}?` + 
       Object.entries(params)
         .reduce((joined, [ key, value ]) => `${joined}&${key}=${value}`)
 
   }, [
     params,
-    publicKey
+    appKey
   ])
 
   return [builtUrl, setParams]

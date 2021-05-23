@@ -29,5 +29,8 @@ APP_MAP_CONFIG="./configs/aptNameMap.json"
 # If the app map config does not exists, create a stub for it
 [[ ! -f "$APP_MAP_CONFIG" ]] && echo "{}" > $APP_MAP_CONFIG
 
+# Copy the config into the src folder so react can load it
+cp $APP_MAP_CONFIG ./src/utils/appMap/aptNameMap.json
+
 # Start the app
 [[ -z "$KEG_EXEC_CMD" ]] && yarn start || yarn $KEG_EXEC_CMD
