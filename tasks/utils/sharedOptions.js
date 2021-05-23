@@ -1,7 +1,7 @@
 const { setSharedOptions } = require('@keg-hub/cli-utils')
 
 /**
- * Creates an eas group for task options to allow sharing the options between tasks
+ * Creates task option groups to allow sharing the options between tasks
  */
 setSharedOptions({
   eas: {
@@ -71,13 +71,58 @@ setSharedOptions({
     limit: {
       alias: ['lm'],
       description: 'Limit the number of items returned from eas',
-      example: "eas list --limit 5",
+      example: "--limit 5",
     },
     status: {
       alias: ['stat', 'st'],
       allow: ['in-queue', 'in-progress', 'errored', 'finished', 'canceled'],
       description: 'Filter which build items are returned from eas based on status',
-      example: ''
+      example: '--status finished'
     },
-  }
+  },
+  appetize: {
+    token: {
+      description: 'Appetize API token when making requests to appetize api',
+      example: '--token <custom-appetize-token>',
+      enforced: true
+    },
+    key: {
+      description: 'The public key of an appetize app',
+      example: "--key <appetize-public-key>",
+    },
+    platform: {
+      alias: [ 'plf', 'type' ],
+      allow: ['android', 'ios', 'all'],
+      description: 'The platform to use when running the appetize task',
+      example: '--platform and',
+      default: 'all'
+    },
+    android: {
+      alias: [ 'and' ],
+      description: 'Run appetize task for android',
+      example: '--android',
+      default: false,
+    },
+    ios: {
+      alias: [ 'apple' ],
+      description: 'Run appetize task for ios',
+      example: '--ios',
+      default: false,
+    },
+    meta: {
+      description: 'Metadata to pass to the appetize API notes field',
+      example: '--meta <meta-data-value>',
+    },
+    filter: {
+      alias: [ 'filter' ],
+      description: `Filters used when calling appetize API find`,
+      example: '--filters key1=value1,key2=value2',
+      type: 'array'
+    },
+    log: {
+      description: 'Log the output from a task',
+      example: '--no-log',
+      default: true
+    }
+  },
 }, true)

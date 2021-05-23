@@ -1,7 +1,9 @@
 const path = require('path')
 const snackRoot = path.join(__dirname, '../')
+const configs = path.join(snackRoot, './configs')
 
 module.exports = {
+  configs,
   snackRoot,
-  configs: path.join(snackRoot, './configs'),
+  appMapPath: path.join(configs, './aptNameMap.json')
 }

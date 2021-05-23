@@ -2,13 +2,14 @@ const { isBool, exists } = require('@keg-hub/jsutils')
 
 /**
  * Gets the eas-cli profile to use for the platform
+ * @param {boolean} doBuild - Should the platform be built
  * @param {string} platform - Platform to get the profile for
  * @param {string} profile - Profile to use when ios and android are not defined
  *
  * @returns {string} - Profile to use when building the app
  */
-const getProfile = (platform, profile) => (
-  !exists(platform) || isBool(platform) ? profile : platform
+const getProfile = (doBuild, platform, profile) => (
+  doBuild && (!exists(platform) || isBool(platform) ? profile : platform)
 )
 
 /**
@@ -26,10 +27,13 @@ const getPlatforms = ({ platform, ios, android, profile }) => {
   const buildIOS = ios || platform === 'ios' || buildAll
   const buildAnd = android || platform === 'android' || buildAll
 
-  return {
-    ios: buildIOS && getProfile(ios, profile),
-    android: buildAnd && getProfile(android, profile)
-  }
+  // If no profile exists, just return the build status
+  return !exists(profile)
+    ? { ios: buildIOS, android: buildAnd }
+    : {
+        ios: getProfile(buildIOS, ios, profile),
+        android: getProfile(buildAnd, android, profile)
+      }
 }
 
 module.exports = {
