@@ -19,7 +19,7 @@ env:
   # Should the base image be pulled from the configured docker provider 
   # Will not automatically add the provider info to the KEG_BASE_IMAGE
   # Without this the base image would be ghcr.io/simpleviewinc/node:12.19-alpine
-  KEG_BASE_PROVIDER: false
+  KEG_BASE_USE_PROVIDER: false
 
   # Image to use when running snack
   KEG_IMAGE_FROM: ghcr.io/simpleviewinc/snack:master
