@@ -1,0 +1,26 @@
+sync:
+  snack:
+    alpha: "/keg/tap"
+    beta: "docker://tap/keg/tap"
+    mode: "one-way-replica"
+    ignore:
+      vcs: true
+      paths:
+        - "node_modules"
+        - "/.*"
+        - "*.lock"
+        - "*.md"
+        - "/temp"
+        - "/web-build"
+        - "/reports"
+        - "/build"
+        - "/docs"
+        - "/configs/aptNameMap.json"
+        - "/src/utils/appMap/aptNameMap.json"
+actions:
+  tap:
+    start:
+      location: /keg/tap
+      privileged: true
+      cmds:
+        - yarn tap:start
