@@ -1,12 +1,12 @@
 {
-  "name": "keg-mobile-tasks",
+  "name": "@keg-hub/mobile-tasks",
   "version": "0.0.0",
   "description": "Keg-Cli tasks for developing mobile apps on the keg platform",
   "main": "./definitions/index.js",
   "publishConfig": {
     "access": "public"
   },
-  "repository": "https://github.com/simpleviewinc/tap-snack",
+  "repository": "https://github.com/simpleviewinc/tap-snack/tree/master/tasks",
   "author": "Lance Tipton",
   "license": "MIT",
   "private": false,
