@@ -1,0 +1,23 @@
+{
+  "name": "keg-mobile-tasks",
+  "version": "0.0.0",
+  "description": "Keg-Cli tasks for developing mobile apps on the keg platform",
+  "main": "./definitions/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/simpleviewinc/tap-snack",
+  "author": "Lance Tipton",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@keg-hub/appetite": "0.0.2",
+    "@keg-hub/cli-utils": "0.2.0",
+    "@keg-hub/jsutils": "8.5.0",
+    "@keg-hub/spawn-cmd": "0.1.2",
+    "axios": "0.21.1",
+    "dotenv": "9.0.2",
+    "form-data": "4.0.0",
+    "rimraf": "3.0.2"
+  }
+}

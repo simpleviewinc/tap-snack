@@ -1,5 +1,4 @@
-
-const { sharedOptions } = require('@keg-hub/cli-utils')
+const { sharedOptions, Logger } = require('@keg-hub/cli-utils')
 const { callApi } = require('../../utils/appetize/callApi')
 
 /**
@@ -21,9 +20,9 @@ const getApp = async args => {
     globalConfig
   )
 
-  console.log(`--------- app ---------`)
-  console.log(app)
+  params.log && Logger.log(app)
 
+  return app
 }
 
 module.exports = {
@@ -37,7 +36,8 @@ module.exports = {
       {},
       [
         "key",
-        'token'
+        'token',
+        'log'
       ],
       'appetize'
     ),
