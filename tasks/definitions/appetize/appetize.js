@@ -9,6 +9,7 @@ module.exports = {
       ...require('./generate'),
       ...require('./get'),
       ...require('./list'),
+      ...require('./upsert'),
     },
   }
 }
