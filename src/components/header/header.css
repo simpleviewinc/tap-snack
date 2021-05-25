@@ -1,8 +1,11 @@
 header.header-main {
   padding-left: 10px;
   padding-right: 10px;
-  box-shadow: 0 8px 6px -6px #c3c3c3de;
+  box-shadow: 0 8px 6px -6px #0000001f;
   width: 100%;
+  background-color: #ffffff;
+  position: relative;
+  z-index: 3;
 }
 
 .header-main .header-content .header-title {

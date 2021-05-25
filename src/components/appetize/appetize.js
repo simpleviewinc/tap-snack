@@ -1,4 +1,3 @@
-import { useAppetizeUrl } from '../../hooks'
 import './appetize.css'
 
 const NoPublicKey = () => {
@@ -13,8 +12,8 @@ const NoPublicKey = () => {
 
 const AppetizeFrame = props => {
   const {
-    height='800px',
-    width='378px',
+    height,
+    width,
     url
   } = props
 
@@ -33,12 +32,10 @@ const AppetizeFrame = props => {
   )
 }
 
-export const Appetize = props => {
-  const [appetizeUrl] = useAppetizeUrl(props)
-
+export const Appetize = ({ url }) => {
   return (
     <div className='apt-main' >
-      { appetizeUrl ? <AppetizeFrame url={appetizeUrl} /> : <NoPublicKey /> }
+      { url ? <AppetizeFrame url={url} /> : <NoPublicKey /> }
     </div>
   )
 

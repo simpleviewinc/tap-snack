@@ -1,27 +1,30 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import appMap from '../utils/appMap/aptNameMap.json'
 import { wordCaps } from "@keg-hub/jsutils";
 
+export const useAppList = (selectedKey) => {
+  const apps = useMemo(() => {
+    return Object.entries(appMap)
+      .reduce((items, [ key, apps ]) => {
+        const [ app, ...split ] = key.split('-')
+        const branch = split.join('-')
+        Object.entries(apps)
+          .forEach(([ publicKey, data ]) => {
+            items.push({
+              branch,
+              ...data,
+              key: publicKey,
+              app: wordCaps(app),
+            })
+          })
+        return items
+      }, [])
+  }, [])
 
-export const useAppList = props => {
+  const active = useMemo(() => {
+    return apps.find(app => app.publicKey === selectedKey)
+  }, [apps, selectedKey])
 
-  return useMemo(() => {
-    const items = []
-
-    Object.entries(appMap).map(([ key, apps ]) => {
-      const [ app, ...split ] = key.split('-')
-      const branch = split.join('-')
-      Object.entries(apps).map(([ publicId, data ]) => {
-        items.push({
-          branch,
-          ...data,
-          key: publicId,
-          app: wordCaps(app),
-        })
-      })
-    })
-
-    return items
-  }, [appMap])
+  return { apps,  active }
 
 }

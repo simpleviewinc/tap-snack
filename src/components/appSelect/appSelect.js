@@ -1,4 +1,5 @@
-import { useCallback, useState, useMemo } from 'react'
+import './appSelect.css'
+import { useCallback, useMemo } from 'react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Typography from '@material-ui/core/Typography'
@@ -53,12 +54,7 @@ const ListHeader = props => {
 }
 
 export const AppSelect = props => {
-  const {apps=noPropArr} = props
-  const [ selected, setSelected ] = useState(null)
-
-  const onSelect = useCallback((name) => {
-    setSelected(name)
-  }, [])
+  const {apps=noPropArr, onSelect, selected} = props
 
   return (
     <div className='app-select-main' >
@@ -72,7 +68,7 @@ export const AppSelect = props => {
             key={app.key}
             {...app}
             onSelect={onSelect}
-            selected={app.name === selected}
+            selected={app.publicKey === selected}
           />
         ))}
       </List>
