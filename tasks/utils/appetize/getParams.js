@@ -58,7 +58,7 @@ const getParams = args => {
       addIfExists(meta, params, 'note')
       addIfExists(key, params, 'publicKey')
       addIfExists(file, params, 'filePath')
-      addIfExists(filter, params, 'noteFields')
+      addIfExists(filter, params, 'search')
       addIfExists(platform, params, 'platform')
       break
     }

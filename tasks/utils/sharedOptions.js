@@ -86,6 +86,14 @@ setSharedOptions({
       example: '--token <custom-appetize-token>',
       enforced: true
     },
+    url: {
+      description: 'URL of a hosted simulator build for uploading or updating onto Appetize',
+      example: '--url https://dropbox.com/123049iu/simulator/build/build.tar.gz',
+    },
+    file: {
+      description: 'File path to a local simulator build for uploading or updating onto Appetize',
+      example: '--file /Users/john.smith/downloads/build.tar.gz',
+    },
     key: {
       description: 'The public key of an appetize app',
       example: "--key <appetize-public-key>",
@@ -114,10 +122,10 @@ setSharedOptions({
       example: '--meta <meta-data-value>',
     },
     filter: {
-      alias: [ 'filter' ],
+      alias: [ 'filters' ],
       description: `Filters used when calling appetize API find`,
-      example: '--filters key1=value1,key2=value2',
-      type: 'array'
+      example: '--filter foo:hello,bar:1237',
+      type: 'object'
     },
     log: {
       description: 'Log the output from a task',

@@ -14,7 +14,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@keg-hub/appetite": "0.0.2",
+    "@keg-hub/appetite": "1.0.0",
     "@keg-hub/cli-utils": "0.2.0",
     "@keg-hub/jsutils": "8.5.0",
     "@keg-hub/spawn-cmd": "0.1.2",

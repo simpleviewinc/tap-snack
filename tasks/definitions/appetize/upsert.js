@@ -20,6 +20,7 @@ const upsertApp = async args => {
     { ...params, method: 'upsert' },
     globalConfig
   )
+  console.log('Success!\n', app)
 }
 
 module.exports = {
@@ -39,7 +40,8 @@ module.exports = {
         'android',
         'meta',
         'log',
-        'token'
+        'token',
+        'filter'
       ],
       'appetize'
     ),
