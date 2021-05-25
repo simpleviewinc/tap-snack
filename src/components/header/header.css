@@ -1,8 +1,18 @@
+header.header-main {
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 0 8px 6px -6px #c3c3c3de;
+  width: 100%;
+}
 
 .header-main .header-content .header-title {
   text-align: left;
 }
 
 .header-main .header-content .header-settings {
+  text-align: right;
+}
+
+.header-main  .settings-dropdown-main {
   text-align: right;
 }

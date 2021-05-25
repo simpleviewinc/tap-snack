@@ -1,4 +1,5 @@
 import { useAppetizeUrl } from '../../hooks'
+import './appetize.css'
 
 const NoPublicKey = () => {
   return (
