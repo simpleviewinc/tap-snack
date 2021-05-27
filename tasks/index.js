@@ -1,3 +1,5 @@
+require('module-alias-jest/register')
+
 /**
  * Set the taps root path within the cli-utils
  * Ensure child processes run from the cli-utils use the tap folder as the root directory

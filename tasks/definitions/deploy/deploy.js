@@ -1,29 +1,36 @@
-
 const { sharedOptions } = require('@keg-hub/cli-utils')
-const { getPlatforms } = require('../../utils/getPlatforms')
-const { resolveTapRoot } = require('../../utils/resolveTapRoot')
-const { callApi } = require('../../utils/appetize/callApi')
-const { eas } = require('../../utils/eas')
+const { git } = require('@keg-hub/git-lib')
+const { getPlatforms } = require('SnackTasks/utils/getPlatforms')
+const { resolveTapRoot } = require('SnackTasks/utils/resolveTapRoot')
+const { callApi } = require('SnackTasks/utils/appetize/callApi')
+const { eas } = require('SnackTasks/utils/eas')
 
-const pushToAppetize = (platform, build, branch) => {
+const pushToAppetize = async ({ platform, build, branch, name }) => {
   const { 
     artifact: url,
   } = build
 
   const identifiers = {
-    meta: { branch },
+    meta: { branch, name },
     platform,
   }
 
-  callApi({
+  return await callApi({
     method: 'upsert',
     url,
+    filter: identifiers,
     ...identifiers,
-    search: identifiers
   })
 }
 
-const getLatestBuild = async (platform, location) => {
+/**
+ * Finds the altest latest build for the platform and account
+ * @param {string} platform 
+ * @param {string} location 
+ * @param {string} account 
+ * @returns 
+ */
+const findLatestBuild = async (platform, location, account) => {
   const list = await eas.list({
     params: { format: 'json', env: 'local' },
     platform,
@@ -34,32 +41,54 @@ const getLatestBuild = async (platform, location) => {
     }
   })
 
-  const account = await eas.getAccountName({ location })
-
   return eas.findBuild(list.json, {
     platform,
     startedBy: account,
   })
 }
 
-const getTapBranch = () => 'test-branch'
+/**
+ * @returns {string} branch of tap located at tapRoot
+ */
+const getTapBranch = async tapRoot => {
+  const branch = await git.branch.current({ location: tapRoot })
+  if (!branch)
+    throw new Error(`Could not find git branch for repo located at ${tapRoot}`)
+  
+  return branch.name
+}
 
-const deployApp = async (platform, params) => {
+/**
+ * Builds an app 
+ * @param {string} platform 
+ * @param {string} tap - name of tap to deploy
+ * @returns 
+ */
+const deployApp = async (platform, tap) => {
   // Get the tap root, so we can run the command from there 
-  const tapRoot = resolveTapRoot(params)
-  const tapBranch = getTapBranch(tapRoot)
+  const tapRoot = resolveTapRoot({ tap })
+  const tapBranch = await getTapBranch(tapRoot)
 
   // Build the app with the eas-cli for IOS
   await eas.build({
-    params,
     profile: platform.profile,
     platform: platform.key,
     location: tapRoot,
   })
 
-  const latestBuild = await getLatestBuild(platform.key, tapRoot)
+  // find the build metadata we just uploaded
+  const account = await eas.getAccountName({ location: tapRoot })
+  const latestBuild = await findLatestBuild(platform.key, tapRoot, account)
+  if (!latestBuild )
+    throw new Error(`No build was found for account=${account} and platform=${platform.key}`)
 
-  return await pushToAppetize(platform, latestBuild, tapBranch)
+  // push the eas build to appetize
+  return await pushToAppetize({ 
+    platform: platform.key, 
+    build: latestBuild, 
+    branch: tapBranch,
+    name: `${params.tap}-${tapBranch}`
+  })
 }
 
 /**
@@ -71,20 +100,22 @@ const deploy = async args => {
 
   const { android, ios } = getPlatforms(params)
 
-  if (ios) {
-    const result = await deployApp(
-      { profile: ios, key: 'ios' }, 
-      params, 
-    )
-    console.log('iOS Result: ', result)
+  const results = {
+    ios: ios 
+      ? await deployApp(
+        { profile: ios, key: 'ios' }, 
+        params.tap, 
+      )
+      : 'not-deployed',
+    android: android 
+      ? await deployApp(
+        { profile: android, key: 'android' }, 
+        params.tap, 
+      )
+      : 'not-deployed'
   }
-  if (android) {
-    const result = await deployApp(
-      { profile: android, key: 'android' }, 
-      params, 
-    )
-    console.log('Android Result: ', result)
-  }
+
+  console.log(results)
 }
 
 module.exports = {

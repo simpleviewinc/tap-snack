@@ -1,5 +1,16 @@
-const checkMatch = (s1, s2) => !s1 || (s1.toLowerCase() === s2.toLowerCase())
+/**
+ * Helper for findBuild
+ * @param {string} s1 
+ * @param {string} s2 
+ * @returns {string} checks that s1 doesn't exist, or equals s2 when lower case
+ */
+const checkMatch = (s1, s2) => (s1 === undefined) || (s1.toLowerCase() === s2.toLowerCase())
 
+/**
+ * @param {Array<Object>} builds - json result of calling eas.build
+ * @param {Object} expected - EAS Build Object entries to filter by. Any that are omitted are not used.
+ * @returns {Object} - the latest build that also matches the expected keys
+ */
 const findBuild = (builds, expected) => {
   const {
     platform,

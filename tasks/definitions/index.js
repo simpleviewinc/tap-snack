@@ -1,5 +1,6 @@
 // Load the local env file
 require('dotenv').config()
+require('module-alias-jest/register')
 
 // Set the shared options for the tasks
 require('../utils/sharedOptions')

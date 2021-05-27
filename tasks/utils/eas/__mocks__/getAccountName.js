@@ -1,3 +1,3 @@
 module.exports = {
-  getAccountName: jest.fn(() => 'mpcarolin')
+  getAccountName: jest.fn(() => 'lance.tipton')
 }

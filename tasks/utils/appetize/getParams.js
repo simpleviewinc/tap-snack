@@ -10,9 +10,9 @@ const { exists } = require('@keg-hub/jsutils')
  *
  * @returns {Void}
  */
-const addIfExists = (item, params, key) => (
-  exists(item) && (params[key] = item)
-)
+const addIfExists = (item, params, key) => {
+  return exists(item) && (params[key] = item)
+}
 
 /**
  * Gets the params based on the passed in method of the Appetize API
@@ -36,6 +36,7 @@ const getParams = args => {
     filter,
     key,
     meta,
+    note,
     method,
     platform,
     token,
@@ -55,7 +56,8 @@ const getParams = args => {
     }
     case 'upsert': {
       addIfExists(url, params, 'url')
-      addIfExists(meta, params, 'note')
+      addIfExists(note, params, 'note')
+      addIfExists(meta, params, 'meta')
       addIfExists(key, params, 'publicKey')
       addIfExists(file, params, 'filePath')
       addIfExists(filter, params, 'search')
@@ -65,7 +67,8 @@ const getParams = args => {
 
     case 'upload': {
       addIfExists(url, params, 'url')
-      addIfExists(meta, params, 'note')
+      addIfExists(note, params, 'note')
+      addIfExists(meta, params, 'meta')
       addIfExists(file, params, 'filePath')
       addIfExists(platform, params, 'platform')
       break
@@ -74,7 +77,8 @@ const getParams = args => {
     case 'update': {
       params.publicKey = key
       addIfExists(url, params, 'url')
-      addIfExists(meta, params, 'note')
+      addIfExists(note, params, 'note')
+      addIfExists(meta, params, 'meta')
       addIfExists(file, params, 'filePath')
       addIfExists(key, params, 'publicKey')
     }

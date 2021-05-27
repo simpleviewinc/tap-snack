@@ -4,6 +4,8 @@ const { error } = require('@keg-hub/cli-utils')
 const { resolveToken } = require('./resolveToken')
 const { isFunc, limbo } = require('@keg-hub/jsutils')
 
+const throwExitError = err => { throw new Error(err) }
+
 /**
  * Calls an Appetize API method based on passed in arguments
  * @type {function}
@@ -29,7 +31,7 @@ const callApi = async ({ method, ...args }, globalConfig) => {
   const [err, response] = await limbo(appetize[method](params))
 
   return err
-    ? error.throwExitError(err)
+    ? throwExitError(err)
     : response.data
 }
 

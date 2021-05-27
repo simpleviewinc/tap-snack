@@ -36,6 +36,9 @@ const easCli = async (args=noOpArr, options=noOpObj, location) => {
     location
   )
 
+  if (['eas-cli', 'outdated version'].every(substr => resp.data.includes(substr)))
+    throw new Error('Your version of eas-cli is out of date. Please update before continuing.')
+
   isObj(resp) &&
     format === 'json' &&
     opts.exec &&
