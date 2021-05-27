@@ -1,0 +1,1 @@
+module.exports.resolveTapRoot = jest.fn(({ tap, location }) => location || `path/to/${tap}`)

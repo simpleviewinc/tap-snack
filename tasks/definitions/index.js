@@ -6,6 +6,7 @@ require('../utils/sharedOptions')
 
 module.exports = {
   ...require('./appetize'),
+  ...require('./deploy'),
   ...require('./eas'),
   ...require('./tap'),
 }
