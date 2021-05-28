@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography'
 
 const SNACK_NAME = wordCaps(process.env.REACT_APP_TAP_NAME || 'tap-snack')
 
-
 const Settings = props => {
   const [ anchorEl, setAnchorEl ] = useState(null)
 

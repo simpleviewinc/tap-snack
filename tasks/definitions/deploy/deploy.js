@@ -146,8 +146,9 @@ const deploy = async args => {
     })
   }
 
-  console.log(results)
+  params.log && console.log(results)
   params.out && saveResults(params.out, results)
+  return results
 }
 
 module.exports = {
