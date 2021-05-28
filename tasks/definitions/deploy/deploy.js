@@ -60,17 +60,25 @@ const getTapBranch = async tapRoot => {
 
 /**
  * Builds an app 
- * @param {string} platform 
- * @param {string} tap - name of tap to deploy
+ * @param {Object} options
+ * @param {string} options.tap - name of tap to deploy
+ * @param {string} options.platform 
+ * @param {boolean} options.skipBuild - if true, won't start a new eas build, but runs the other steps
  * @returns 
  */
-const deployApp = async (platform, tap) => {
+const deployApp = async (options={}) => {
+  const { 
+    platform, 
+    tap, 
+    skipBuild=false 
+  } = options
+
   // Get the tap root, so we can run the command from there 
   const tapRoot = resolveTapRoot({ tap })
   const tapBranch = await getTapBranch(tapRoot)
 
   // Build the app with the eas-cli for IOS
-  await eas.build({
+  !skipBuild && await eas.build({
     profile: platform.profile,
     platform: platform.key,
     location: tapRoot,
@@ -87,7 +95,7 @@ const deployApp = async (platform, tap) => {
     platform: platform.key, 
     build: latestBuild, 
     branch: tapBranch,
-    name: `${params.tap}-${tapBranch}`
+    name: `${tap}-${tapBranch}`
   })
 }
 
@@ -101,18 +109,14 @@ const deploy = async args => {
   const { android, ios } = getPlatforms(params)
 
   const results = {
-    ios: ios 
-      ? await deployApp(
-        { profile: ios, key: 'ios' }, 
-        params.tap, 
-      )
-      : 'not-deployed',
-    android: android 
-      ? await deployApp(
-        { profile: android, key: 'android' }, 
-        params.tap, 
-      )
-      : 'not-deployed'
+    ios: ios && await deployApp({
+      ...params,
+      platform: { profile: ios, key: 'ios' }
+    }),
+    android: android && await deployApp({
+      ...params,
+      platform: { profile: android, key: 'android' }
+    })
   }
 
   console.log(results)
@@ -124,22 +128,29 @@ module.exports = {
     alias: ['dp'],
     action: deploy,
     example: 'eas build <options>',
-    description : 'Builds production builds of a tap',
-    options: sharedOptions(`eas build`, {}, [
-      'platform',
-      'build',
-      'android',
-      'ios',
-      'profile',
-      'location',
-      'tap',
-      'name',
-      'cache',
-      'local',
-      'interactive',
-      'credentials',
-      'configuration'
-    ], 'eas')
+    description : 'Builds and deploys a tap to appetize',
+    options: {
+      skipBuild: {
+        alias: ['skip'],
+        description: 'skips the build step of this task',
+        default: false,
+      },
+      ...sharedOptions(`eas build`, {}, [
+        'platform',
+        'build',
+        'android',
+        'ios',
+        'profile',
+        'location',
+        'tap',
+        'name',
+        'cache',
+        'local',
+        'interactive',
+        'credentials',
+        'configuration'
+      ], 'eas')
+    }
   }
 }
 

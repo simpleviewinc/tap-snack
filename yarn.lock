@@ -1628,10 +1628,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@keg-hub/appetite@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@keg-hub/appetite/-/appetite-1.0.0.tgz#f9f1370bf3fc37e6645a9c09cf234f629875908f"
-  integrity sha512-6zlout2yOPftVUSByM7UJQjNUPtmzWQwqOkqigW+7NwTP+ko1b3hBvAN0OmP9t73E5aDOREySvSdQBXAQdGm1g==
+"@keg-hub/appetite@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@keg-hub/appetite/-/appetite-1.0.1.tgz#b1b416ac5cfad57cd74b64d8a5a5c0e9bbe719ba"
+  integrity sha512-3A4uVJXS2UheZgeXEBif7N5s+aK1B2M5XD+DzLr0JUNJwyOUvQY8AEJKdbIMh4GhIB8LGLtHo3aG1cqhQDhGRw==
   dependencies:
     "@keg-hub/jsutils" "8.6.0"
     axios "^0.21.1"
