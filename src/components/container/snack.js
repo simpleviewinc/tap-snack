@@ -19,7 +19,7 @@ export const SnackContainer = props => {
     const app = apps.find(app => app.publicKey === publicKey)
     const name = get(app, 'meta.name', get(app, 'name'))
     setParams({ app: name }, true)
-  }, [apps, params, setParams])
+  }, [apps, setParams])
 
   const onSettingChange = useCallback((key, value) => {
     setParams({ [key]: value }, true)
@@ -41,7 +41,7 @@ export const SnackContainer = props => {
           item
           xs={4}
           lg={3}
-          xl={1}
+          xl={2}
           className='app-select-grid'
         >
           <AppSelect
@@ -54,7 +54,7 @@ export const SnackContainer = props => {
           item
           xs={8}
           lg={9}
-          xl={11}
+          xl={10}
           className={`apt-grid ${backColor}`}
         >
           <Appetize
