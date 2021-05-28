@@ -5,6 +5,7 @@ const { getPlatforms } = require(`${utilsPath}/getPlatforms`)
 const { resolveTapRoot } = require(`${utilsPath}/resolveTapRoot`)
 const { callApi } = require(`${utilsPath}/appetize/callApi`)
 const { eas } = require(`${utilsPath}/eas`)
+const fs = require('fs')
 
 /**
  * Pushes a build to appetize
@@ -86,7 +87,7 @@ const deployApp = async (options={}) => {
     platform, 
     tap, 
     location,
-    skipBuild=false 
+    skipBuild=false
   } = options
 
   // Get the tap root, so we can run the command from there 
@@ -116,6 +117,16 @@ const deployApp = async (options={}) => {
 }
 
 /**
+ * Saves appetizeResults to disk, at `path`
+ * @param {String} path 
+ * @param {Object} appetizeResults 
+ */
+const saveResults = (path, appetizeResults) => {
+  const serialized = JSON.stringify(appetizeResults, null, 2)
+  fs.writeFileSync(path, serialized)
+}
+
+/**
  * Builds and mobile app using eas-cli, then uploads the result to appetize
  * @param {Object} args - arguments passed from the runTask method
  */
@@ -136,6 +147,7 @@ const deploy = async args => {
   }
 
   console.log(results)
+  params.out && saveResults(params.out, results)
 }
 
 module.exports = {
@@ -150,6 +162,10 @@ module.exports = {
         alias: ['skip'],
         description: 'skips the build step of this task',
         default: false,
+      },
+      out: {
+        alias: ['save'],
+        description: 'An optional path to save the appetize result object to, as JSON.',
       },
       ...sharedOptions(`eas build`, {}, [
         'platform',
