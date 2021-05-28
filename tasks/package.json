@@ -21,13 +21,13 @@
   "devDependencies": {
     "module-alias-jest": "0.0.3",
     "@keg-hub/git-lib": "0.0.1",
-    "@keg-hub/cli-utils": "0.2.0",
+    "@keg-hub/cli-utils": "0.2.2",
     "@keg-hub/jsutils": "8.5.0"
   },
   "peerDependencies": {
     "module-alias-jest": "0.0.3",
-    "@keg-hub/cli-utils": "^0.2.0",
+    "@keg-hub/cli-utils": "0.2.2",
     "@keg-hub/git-lib": "0.0.1",
-    "@keg-hub/jsutils": "^8.5.0"
+    "@keg-hub/jsutils": "8.5.0"
   }
 }
