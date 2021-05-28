@@ -1,54 +1,97 @@
+import { useCallback, useState } from 'react'
 import { wordCaps } from '@keg-hub/jsutils'
 import './header.css'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import SettingsIcon from '@material-ui/icons/Settings'
+import Typography from '@material-ui/core/Typography'
 
 const SNACK_NAME = wordCaps(process.env.REACT_APP_TAP_NAME || 'tap-snack')
 
+
 const Settings = props => {
+  const [ anchorEl, setAnchorEl ] = useState(null)
+
+  const openMenu = useCallback((event) => {
+    setAnchorEl(event.currentTarget)
+  }, [])
+
+  const closeMenu = useCallback(() => {
+    setAnchorEl(null)
+  }, [])
 
   return (
     <div className="settings-dropdown-main">
-      <button
-        className="settings-dropdown-toggle btn btn-secondary btn-sm dropdown-toggle"
-        type="button"
-        id="settingsDropDown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
+      <Button
+        aria-controls="settings-menu"
+        aria-haspopup="true"
+        color="primary"
+        onClick={openMenu}
+        startIcon={<SettingsIcon />}
       >
         Settings
-      </button>
-      <ul
-        className="settings-dropdown-list dropdown-menu"
-        aria-labelledby="settingsDropDown"
+      </Button>
+      <Menu
+        id="settings-menu"
+        className="settings-menu"
+        anchorEl={anchorEl}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={closeMenu}
       >
-        <li>
-          <span className="dropdown-item" >Switch Device</span>
-        </li>
-        <li>
-          <span className="dropdown-item" >Color</span>
-        </li>
-        <li>
-          <span className="dropdown-item" >Other</span>
-        </li>
-      </ul>
+        <MenuItem onClick={closeMenu}>
+          Switch Device
+        </MenuItem>
+        <MenuItem onClick={closeMenu}>
+          Color
+        </MenuItem>
+        <MenuItem onClick={closeMenu}>
+          Other
+        </MenuItem>
+      </Menu>
     </div>
   )
 }
 
+
 export const Header = props => {
-    return (
-      <header className='header-main px-2 pt-2 border-bottom' >
-       <div className='header-content row justify-content-start'>
-          <div className='col' >
-            <h3 className="header-title" >
+  return (
+    <AppBar
+      className='header-main'
+      position='static'
+      color='transparent'
+      elevation={0}
+    >
+      <Toolbar>
+        <Grid
+          edge="start"
+          className='header-content'
+          container
+          spacing={3}
+        >
+          <Grid item xs={8}>
+            <Typography variant='h6' className="header-title" >
               {SNACK_NAME}
-            </h3>
-          </div>
-          <div className='col' >
-            <div className='header-settings' >
-              <Settings />
-            </div>
-          </div>
-       </div>
-      </header>
-    )
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Settings />
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
+  )
 }

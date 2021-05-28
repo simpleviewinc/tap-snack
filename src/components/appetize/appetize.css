@@ -1,0 +1,18 @@
+/* TODO - Update this to be properly centered */
+.apt-main {
+  margin-top: 12%;
+  position: relative;
+  z-index: 1;
+}
+
+.apt-main .apt-iframe-main {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 30%;
+}
+
+.apt-main .apt-iframe-frame {
+  min-width: 312px;
+  min-height: 800px;
+}

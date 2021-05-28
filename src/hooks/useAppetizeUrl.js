@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { useQueryParams }  from './useQueryParams'
 import { getAppFromMap } from '../utils/appMap/getAppFromMap'
 
 const appetizeUrl = `https://appetize.io/embed`
@@ -18,24 +17,21 @@ const resolvePublicKey = (publicKey, app) => {
  */
 export const useAppetizeUrl = (props) => {
   const {
+    app,
     publicKey,
-    ...altParams
+    ...params
   } = props
 
+  return useMemo(() => {
+    const appKey = resolvePublicKey(publicKey, app)
+    return {
+      publicKey: appKey,
+      url: appKey &&
+        `${appetizeUrl}/${appKey}?` + 
+        Object.entries(params)
+          .reduce((joined, [ key, value ]) => `${joined}&${key}=${value}`, ``),
+    }
 
-  const [params, setParams ] = useQueryParams(altParams)
-  const appKey = resolvePublicKey(publicKey, params.app)
+  }, [publicKey, app])
 
-  const builtUrl = useMemo(() => {
-    return appKey &&
-      `${appetizeUrl}/${appKey}?` + 
-      Object.entries(params)
-        .reduce((joined, [ key, value ]) => `${joined}&${key}=${value}`)
-
-  }, [
-    params,
-    appKey
-  ])
-
-  return [builtUrl, setParams]
 }
