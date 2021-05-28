@@ -5,10 +5,24 @@ const { resolveTapRoot } = require('SnackTasks/utils/resolveTapRoot')
 const { callApi } = require('SnackTasks/utils/appetize/callApi')
 const { eas } = require('SnackTasks/utils/eas')
 
-const pushToAppetize = async ({ platform, build, branch, name }) => {
+/**
+ * Pushes a build to appetize
+ * @param {Object} options
+ * @param {Object} options.build
+ * @param {string} options.platform
+ * @param {string} options.branch
+ * @param {string} options.name
+ * @returns 
+ */
+const pushToAppetize = async (options={}) => {
   const { 
-    artifact: url,
-  } = build
+    platform, 
+    build, 
+    branch, 
+    name 
+  } = options
+
+  const { artifact: url } = build
 
   const identifiers = {
     meta: { branch, name },
@@ -24,7 +38,7 @@ const pushToAppetize = async ({ platform, build, branch, name }) => {
 }
 
 /**
- * Finds the altest latest build for the platform and account
+ * Finds the latest latest build for the platform and account
  * @param {string} platform 
  * @param {string} location 
  * @param {string} account 
@@ -54,7 +68,7 @@ const getTapBranch = async tapRoot => {
   const branch = await git.branch.current({ location: tapRoot })
   if (!branch)
     throw new Error(`Could not find git branch for repo located at ${tapRoot}`)
-  
+
   return branch.name
 }
 

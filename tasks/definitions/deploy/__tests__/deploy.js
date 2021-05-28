@@ -52,7 +52,7 @@ describe('deploy', () => {
   const origLog = console.log
 
   beforeAll(() => {
-    git.branch.current.mockReturnValue(branch)
+    git.branch.current.mockReturnValue({ name: branch })
     callApi.mockReturnValue(mockAppetiteResponses.ios)
     console.log = jest.fn()
   })
@@ -72,9 +72,8 @@ describe('deploy', () => {
 
     expect(eas.build).toHaveBeenCalledWith(
       expect.objectContaining({
-        params,
         location: expect.stringContaining(params.tap),
-        platform: 'ios'
+        platform: 'ios',
       })
     )
 
@@ -98,8 +97,10 @@ describe('deploy', () => {
     )
 
     expect(console.log).toHaveBeenCalledWith(
-      expect.stringContaining(''),
-      expect.objectContaining(mockAppetiteResponses.ios)
+      expect.objectContaining({
+        android: false,
+        ios: mockAppetiteResponses.ios
+      })
     )
   })
 
