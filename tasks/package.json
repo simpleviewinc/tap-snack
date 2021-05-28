@@ -1,6 +1,6 @@
 {
   "name": "@keg-hub/mobile-tasks",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Keg-Cli tasks for developing mobile apps on the keg platform",
   "main": "./definitions/index.js",
   "publishConfig": {
