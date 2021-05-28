@@ -11,7 +11,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@keg-hub/appetite": "0.0.2",
+    "@keg-hub/appetite": "1.0.1",
     "@keg-hub/spawn-cmd": "0.1.2",
     "axios": "0.21.1",
     "dotenv": "9.0.2",
