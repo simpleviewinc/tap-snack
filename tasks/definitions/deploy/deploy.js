@@ -1,9 +1,10 @@
 const { sharedOptions } = require('@keg-hub/cli-utils')
 const { git } = require('@keg-hub/git-lib')
-const { getPlatforms } = require('SnackTasks/utils/getPlatforms')
-const { resolveTapRoot } = require('SnackTasks/utils/resolveTapRoot')
-const { callApi } = require('SnackTasks/utils/appetize/callApi')
-const { eas } = require('SnackTasks/utils/eas')
+const utilsPath = '../../utils'
+const { getPlatforms } = require(`${utilsPath}/getPlatforms`)
+const { resolveTapRoot } = require(`${utilsPath}/resolveTapRoot`)
+const { callApi } = require(`${utilsPath}/appetize/callApi`)
+const { eas } = require(`${utilsPath}/eas`)
 
 /**
  * Pushes a build to appetize
