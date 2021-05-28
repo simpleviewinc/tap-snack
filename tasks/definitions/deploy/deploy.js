@@ -84,11 +84,12 @@ const deployApp = async (options={}) => {
   const { 
     platform, 
     tap, 
+    location,
     skipBuild=false 
   } = options
 
   // Get the tap root, so we can run the command from there 
-  const tapRoot = resolveTapRoot({ tap })
+  const tapRoot = resolveTapRoot({ tap, location })
   const tapBranch = await getTapBranch(tapRoot)
 
   // Build the app with the eas-cli for IOS

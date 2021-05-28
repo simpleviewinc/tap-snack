@@ -1,6 +1,6 @@
 const path = require('path')
 const { getKegGlobalConfig, getTapPath } = require('@keg-hub/cli-utils')
-const { tryRequireSync } = require('@keg-hub/jsutils')
+const { tryRequireSync } = require('@keg-hub/jsutils/src/node')
 
 /**
  * @param {string} location 
@@ -12,7 +12,7 @@ const getPathRoot = location => {
 
   const nextPath = path.resolve(location, 'package.json')
   if (tryRequireSync(nextPath))
-    return nextPath
+    return location
 
   return getPathRoot(path.resolve(location, '..'))
 }
