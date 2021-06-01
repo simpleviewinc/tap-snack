@@ -10,7 +10,7 @@ const fs = require('fs')
 /**
  * Pushes a build to appetize
  * @param {Object} options
- * @param {Object} options.build
+ * @param {Object} options.url
  * @param {string} options.platform
  * @param {string} options.branch
  * @param {string} options.name
@@ -19,12 +19,10 @@ const fs = require('fs')
 const pushToAppetize = async (options={}) => {
   const { 
     platform, 
-    build, 
+    url, 
     branch, 
     name 
   } = options
-
-  const { artifact: url } = build
 
   const identifiers = {
     meta: { branch, name },
@@ -40,46 +38,32 @@ const pushToAppetize = async (options={}) => {
 }
 
 /**
- * Finds the latest latest build for the platform and account
- * @param {string} platform 
- * @param {string} location 
- * @param {string} account 
- * @returns 
+ * Saves appetizeResults to disk, at `path`
+ * @param {String} path 
+ * @param {Object} appetizeResults 
  */
-const findLatestBuild = async (platform, location, account) => {
-  const list = await eas.list({
-    params: { format: 'json', env: 'local' },
-    platform,
-    location,
-    options: {
-      exec: true,
-      format: 'json'
-    }
-  })
-
-  return eas.findBuild(list.json, {
-    platform,
-    startedBy: account,
-  })
+const saveResults = (path, appetizeResults) => {
+  const serialized = JSON.stringify(appetizeResults, null, 2)
+  fs.writeFileSync(path, serialized)
 }
 
 /**
+ * @param {string} tapRoot - the file path to the root of the tap
  * @returns {string} branch of tap located at tapRoot
  */
 const getTapBranch = async tapRoot => {
   const branch = await git.branch.current({ location: tapRoot })
-  if (!branch)
-    throw new Error(`Could not find git branch for repo located at ${tapRoot}`)
-
+  if (!branch) throw new Error(`Could not find git branch for repo located at ${tapRoot}`)
   return branch.name
 }
 
 /**
- * Builds an app 
+ * Builds an app, then deploys it to Appetize
  * @param {Object} options
- * @param {string} options.tap - name of tap to deploy
- * @param {string} options.platform 
- * @param {boolean} options.skipBuild - if true, won't start a new eas build, but runs the other steps
+ * @param {string} options.tap - alias of tap to deploy 
+ * @param {string} options.platform - ios or android
+ * @param {string} options.location - optional explicit path to tap (unnecessary if options.tap is defined)
+ * @param {boolean} options.skipBuild - if true, won't start a new eas build, but it will run the remaining steps
  * @returns 
  */
 const deployApp = async (options={}) => {
@@ -103,27 +87,17 @@ const deployApp = async (options={}) => {
 
   // find the build metadata we just uploaded
   const account = await eas.getAccountName({ location: tapRoot })
-  const latestBuild = await findLatestBuild(platform.key, tapRoot, account)
+  const latestBuild = await eas.findLatestBuild(platform.key, tapRoot, account)
   if (!latestBuild )
     throw new Error(`No build was found for account=${account} and platform=${platform.key}`)
 
   // push the eas build to appetize
   return await pushToAppetize({ 
     platform: platform.key, 
-    build: latestBuild, 
+    url: latestBuild.artifact, 
     branch: tapBranch,
     name: `${tap}-${tapBranch}`
   })
-}
-
-/**
- * Saves appetizeResults to disk, at `path`
- * @param {String} path 
- * @param {Object} appetizeResults 
- */
-const saveResults = (path, appetizeResults) => {
-  const serialized = JSON.stringify(appetizeResults, null, 2)
-  fs.writeFileSync(path, serialized)
 }
 
 /**
@@ -162,11 +136,14 @@ module.exports = {
       skipBuild: {
         alias: ['skip'],
         description: 'skips the build step of this task',
-        default: false,
       },
       out: {
         alias: ['save'],
         description: 'An optional path to save the appetize result object to, as JSON.',
+      },
+      log: {
+        description: 'If true, logs out the results of the appetize upsert',
+        default: true,
       },
       ...sharedOptions(`eas build`, {}, [
         'platform',

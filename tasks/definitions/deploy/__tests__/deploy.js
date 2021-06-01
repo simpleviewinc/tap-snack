@@ -6,11 +6,13 @@ jest.mock('SnackTasks/utils/eas/findBuild')
 jest.mock('SnackTasks/utils/eas/getAccountName')
 jest.mock('SnackTasks/utils/resolveTapRoot')
 jest.mock('SnackTasks/utils/appetize/callApi')
+jest.mock('fs')
 
 const { eas } = require('SnackTasks/utils/eas/eas')
 const { deploy } = require('../deploy')
 const { callApi } = require('SnackTasks/utils/appetize/callApi')
 const { git } = require('@keg-hub/git-lib')
+const fs = require('fs')
 
 const { jsonList } = require('SnackTasks/utils/__mocks__/easList')
 const expectedBuild = jsonList.find(build => build.id === '1a73893f-e667-451d-b186-047f509380c1')
@@ -65,7 +67,8 @@ describe('deploy', () => {
   it('should upload to eas depending on platform', async () => {
     const params = {
       ios: true, 
-      tap: 'my_tap'
+      tap: 'my_tap',
+      log: true
     }
 
     await deploy.action({ params })
@@ -102,6 +105,19 @@ describe('deploy', () => {
         ios: mockAppetiteResponses.ios
       })
     )
+  })
+
+  it('should save to disk, when passed "out" param', async () => {
+    fs.writeFileSync.mockReturnValue(null)
+    const params = {
+      ios: true, 
+      tap: 'my_tap',
+      out: true
+    }
+
+    await deploy.action({ params })
+
+    expect(fs.writeFileSync).toHaveBeenCalled()
   })
 
 })
