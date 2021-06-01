@@ -107,6 +107,22 @@ describe('deploy', () => {
     )
   })
 
+  it('should return the results', async () => {
+    const params = {
+      ios: true, 
+      tap: 'my_tap',
+    }
+
+    const result = await deploy.action({ params })
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        android: false,
+        ios: mockAppetiteResponses.ios
+      })
+    )
+  })
+
   it('should save to disk, when passed "out" param', async () => {
     fs.writeFileSync.mockReturnValue(null)
     const params = {
