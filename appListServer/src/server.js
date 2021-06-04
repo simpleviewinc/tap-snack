@@ -17,7 +17,7 @@ const start = (options={}) => {
   } = options
 
   if (!token)
-    throw new Error('TOKEN env must be defined')
+    throw new Error('TOKEN env must be set to your appetize api token')
 
   const app = express()
 
@@ -44,7 +44,10 @@ const start = (options={}) => {
         ? err.message + ' --- check your api token.'
         : err.message
 
-      res.status(status).send(message)
+      res.status(status).json({
+        error: message,
+        status,
+      })
     }
   })
 

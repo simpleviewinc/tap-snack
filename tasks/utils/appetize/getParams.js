@@ -1,17 +1,46 @@
 const { exists } = require('@keg-hub/jsutils')
 
 /**
- * Checks if item exists and if it does, adds it the params object
- * @type {function}
- * @private
- * @param {*} item - Value to check if exists
- * @param {Object} params - Object to add the item to if it exists
- * @param {string} key - Name of the field to store of item under on the param object
- *
- * @returns {Void}
+ * Map of tap-snack param names to appetite-wrapper param names
+ * (anything omitted is the same)
  */
-const addIfExists = (item, params, key) => {
-  return exists(item) && (params[key] = item)
+const paramMap = {
+  key: 'publicKey',
+  file: 'filePath',
+  filter: 'search',
+}
+
+const uploadKeys = [ 'token', 'url', 'note', 'meta', 'file', 'platform' ]
+
+/**
+ * Supported params by method
+ */
+const paramsByMethod = {
+  getAll: [ 'token' ],
+  upsert: [ ...uploadKeys, 'key', 'filter' ],
+  update: [ ...uploadKeys, 'key' ],
+  upload: uploadKeys,
+  get: [ 'token', 'key' ],
+  remove: [ 'token', 'key' ],
+}
+
+/**
+ * 
+ * @param {Object} params - params, from the task, to be mapped
+ * @param {Array} acceptedKeys - valid param keys
+ * @returns 
+ */
+const mapParamKeys = (params, acceptedKeys=[]) => {
+  return Object.entries(params).reduce(
+    (mapped, [ key, value ]) => {
+      const actualKey = paramMap[key] || key
+      exists(value) && 
+        acceptedKeys.includes(key) && 
+        (mapped[actualKey] = value)
+      return mapped
+    },
+    {}
+  )
 }
 
 /**
@@ -31,60 +60,12 @@ const addIfExists = (item, params, key) => {
  * @returns {Object} - params for the Appetize API method
  */
 const getParams = args => {
-  const {
-    file,
-    filter,
-    key,
-    meta,
-    note,
-    method,
-    platform,
-    token,
-    url
-  } = args
+  const { method, ...params } = args
 
-  const params = { token }
-
-  switch(method){
-    case 'getAll': {
-      break
-    }
-    case 'get': 
-    case 'remove': {
-      addIfExists(key, params, 'publicKey')
-      break
-    }
-    case 'upsert': {
-      addIfExists(url, params, 'url')
-      addIfExists(note, params, 'note')
-      addIfExists(meta, params, 'meta')
-      addIfExists(key, params, 'publicKey')
-      addIfExists(file, params, 'filePath')
-      addIfExists(filter, params, 'search')
-      addIfExists(platform, params, 'platform')
-      break
-    }
-
-    case 'upload': {
-      addIfExists(url, params, 'url')
-      addIfExists(note, params, 'note')
-      addIfExists(meta, params, 'meta')
-      addIfExists(file, params, 'filePath')
-      addIfExists(platform, params, 'platform')
-      break
-    }
-
-    case 'update': {
-      params.publicKey = key
-      addIfExists(url, params, 'url')
-      addIfExists(note, params, 'note')
-      addIfExists(meta, params, 'meta')
-      addIfExists(file, params, 'filePath')
-      addIfExists(key, params, 'publicKey')
-    }
-  }
-
-  return params
+  return mapParamKeys(
+    params,
+    paramsByMethod[method]
+  )
 }
 
 module.exports = {

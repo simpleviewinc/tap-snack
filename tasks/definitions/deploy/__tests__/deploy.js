@@ -4,7 +4,10 @@ jest.mock('SnackTasks/utils/eas/build')
 jest.mock('SnackTasks/utils/eas/list')
 jest.mock('SnackTasks/utils/eas/findBuild')
 jest.mock('SnackTasks/utils/eas/getAccountName')
-jest.mock('SnackTasks/utils/resolveTapRoot')
+jest.mock('@keg-hub/cli-utils', () => ({
+  ...jest.requireActual('@keg-hub/cli-utils/src'),
+  getTapRoot: jest.fn(() => 'my_tap')
+}))
 jest.mock('SnackTasks/utils/appetize/callApi')
 jest.mock('fs')
 

@@ -120,6 +120,12 @@ setSharedOptions({
     meta: {
       description: 'Metadata to pass to the appetize API notes field',
       example: '--meta <meta-data-value>',
+      type: 'object',
+    },
+    note: {
+      description: 'Raw note string field',
+      example: '--note test-note',
+      type: 'string'
     },
     filter: {
       alias: [ 'filters' ],

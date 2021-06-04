@@ -1,8 +1,7 @@
 
 const { eas } = require('../../utils/eas')
 const { getPlatforms } = require('../../utils/getPlatforms')
-const { resolveTapRoot } = require('../../utils/resolveTapRoot')
-const { sharedOptions } = require('@keg-hub/cli-utils')
+const { sharedOptions, getTapRoot } = require('@keg-hub/cli-utils')
 
 /**
  * Builds and mobile app using eas-cli
@@ -24,7 +23,7 @@ const buildApp = async args => {
   const { android, ios } = getPlatforms(params)
 
   // Get the tap root, so we can run the command from there 
-  const tapRoot = resolveTapRoot(params)
+  const tapRoot = getTapRoot(params)
 
   // Build the app with the eas-cli for IOS
   ios && await eas.build({

@@ -2,7 +2,7 @@ const { sharedOptions } = require('@keg-hub/cli-utils')
 const { git } = require('@keg-hub/git-lib')
 const utilsPath = '../../utils'
 const { getPlatforms } = require(`${utilsPath}/getPlatforms`)
-const { resolveTapRoot } = require(`${utilsPath}/resolveTapRoot`)
+const { getTapRoot } = require(`@keg-hub/cli-utils`)
 const { callApi } = require(`${utilsPath}/appetize/callApi`)
 const { eas } = require(`${utilsPath}/eas`)
 const fs = require('fs')
@@ -10,10 +10,10 @@ const fs = require('fs')
 /**
  * Pushes a build to appetize
  * @param {Object} options
- * @param {Object} options.url
- * @param {string} options.platform
- * @param {string} options.branch
- * @param {string} options.name
+ * @param {Object} options.url - url to a hosted simulator build
+ * @param {string} options.platform - ios or android
+ * @param {string} options.branch - branch of the tap that you are deploying 
+ * @param {string} options.name - name tag of the tap your are deploying (e.g. evf-feature-branch)
  * @returns 
  */
 const pushToAppetize = async (options={}) => {
@@ -24,7 +24,7 @@ const pushToAppetize = async (options={}) => {
     name 
   } = options
 
-  const identifiers = {
+  const buildIdentifiers = {
     meta: { branch, name },
     platform,
   }
@@ -32,15 +32,15 @@ const pushToAppetize = async (options={}) => {
   return await callApi({
     method: 'upsert',
     url,
-    filter: identifiers,
-    ...identifiers,
+    filter: buildIdentifiers,
+    ...buildIdentifiers,
   })
 }
 
 /**
  * Saves appetizeResults to disk, at `path`
- * @param {String} path 
- * @param {Object} appetizeResults 
+ * @param {String} path - path to file to save
+ * @param {Object} appetizeResults - result object of the appetize upload, to be stringified and saved to file
  */
 const saveResults = (path, appetizeResults) => {
   const serialized = JSON.stringify(appetizeResults, null, 2)
@@ -75,7 +75,7 @@ const deployApp = async (options={}) => {
   } = options
 
   // Get the tap root, so we can run the command from there 
-  const tapRoot = resolveTapRoot({ tap, location })
+  const tapRoot = getTapRoot({ tap, location })
   const tapBranch = await getTapBranch(tapRoot)
 
   // Build the app with the eas-cli for IOS
