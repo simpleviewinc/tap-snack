@@ -12,6 +12,7 @@
   "private": false,
   "dependencies": {
     "@keg-hub/appetite": "1.0.1",
+    "@keg-hub/git-lib": "0.0.1", 
     "@keg-hub/spawn-cmd": "0.1.2",
     "axios": "0.21.1",
     "dotenv": "9.0.2",
@@ -27,7 +28,6 @@
   "peerDependencies": {
     "module-alias-jest": "0.0.3",
     "@keg-hub/cli-utils": "0.2.2",
-    "@keg-hub/git-lib": "0.0.1",
     "@keg-hub/jsutils": "8.6.0"
   }
 }
