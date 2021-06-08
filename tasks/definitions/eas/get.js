@@ -1,14 +1,12 @@
-const { eas } = require('../../utils/eas')
 const { getPlatforms } = require('../../utils/getPlatforms')
-const { resolveTapRoot } = require('../../utils/resolveTapRoot')
-const { sharedOptions } = require('@keg-hub/cli-utils')
+const { sharedOptions, getTapRoot } = require('@keg-hub/cli-utils')
 
 const getBuild = async args => {
   const { params } = args
   const { name, branch, tap } = params
 
   const { android, ios } = getPlatforms(params)
-  const tapRoot = resolveTapRoot(params)
+  const tapRoot = getTapRoot(params)
 
 }
 

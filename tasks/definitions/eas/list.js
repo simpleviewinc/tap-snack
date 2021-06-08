@@ -1,7 +1,6 @@
 const { eas } = require('../../utils/eas')
 const { getPlatforms } = require('../../utils/getPlatforms')
-const { resolveTapRoot } = require('../../utils/resolveTapRoot')
-const { sharedOptions, Logger } = require('@keg-hub/cli-utils')
+const { sharedOptions, Logger, getTapRoot } = require('@keg-hub/cli-utils')
 const { noOpObj, get } = require('@keg-hub/jsutils')
 
 /**
@@ -23,7 +22,7 @@ const listBuilds = async args => {
   const options = asJson ? { exec: true, format } : noOpObj
 
   const { android, ios } = getPlatforms({ ...params, profile: true })
-  const tapRoot = resolveTapRoot(params)
+  const tapRoot = getTapRoot(params)
 
   // List the eas builds for IOS
   const iosResp = ios && await eas.list({

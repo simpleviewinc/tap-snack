@@ -12,11 +12,14 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:tasks": "yarn jest --config ./configs/jest.config.js",
+    "eject": "react-scripts eject",
+    "apt:server": "node ./appListServer/demo.js"
   },
   "dependencies": {
-    "@keg-hub/appetite": "0.0.2",
-    "@keg-hub/cli-utils": "0.2.0",
+    "@keg-hub/appetite": "1.0.1",
+    "@keg-hub/cli-utils": "0.3.0",
+    "@keg-hub/git-lib": "0.0.1",
     "@keg-hub/jsutils": "8.5.0",
     "@keg-hub/spawn-cmd": "0.1.2",
     "@material-ui/core": "4.11.4",
@@ -26,12 +29,19 @@
     "@testing-library/user-event": "12.1.10",
     "axios": "0.21.1",
     "dotenv": "9.0.2",
+    "express": "^4.17.1",
     "form-data": "4.0.0",
+    "module-alias-jest": "0.0.3",
+    "jest": "27.0.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-scripts": "4.0.3",
     "rimraf": "3.0.2",
     "web-vitals": "1.0.1"
+  },
+  "_aliases": {
+    "SnackRoot": ".",
+    "SnackTasks": "tasks"
   },
   "eslintConfig": {
     "extends": [

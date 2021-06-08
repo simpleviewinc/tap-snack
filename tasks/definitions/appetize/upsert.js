@@ -16,10 +16,15 @@ const { callApi } = require('../../utils/appetize/callApi')
  */
 const upsertApp = async args => {
   const { params, globalConfig } = args
+
+  if (!params.filter)
+    throw new Error('You must specify a filter with upsert.')
+
   const app = await callApi(
     { ...params, method: 'upsert' },
     globalConfig
   )
+  console.log('Success!\n', app)
 }
 
 module.exports = {
@@ -38,8 +43,10 @@ module.exports = {
         'ios',
         'android',
         'meta',
+        'note',
         'log',
-        'token'
+        'token',
+        'filter'
       ],
       'appetize'
     ),

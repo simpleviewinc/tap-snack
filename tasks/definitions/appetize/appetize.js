@@ -10,6 +10,7 @@ module.exports = {
       ...require('./get'),
       ...require('./list'),
       ...require('./upsert'),
+      ...require('./remove'),
     },
   }
 }

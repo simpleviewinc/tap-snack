@@ -36,6 +36,12 @@ const easCli = async (args=noOpArr, options=noOpObj, location) => {
     location
   )
 
+  // an error should have been printed out to the console, so lets exit now
+  if (resp === 1) process.exit(1) 
+
+  if (resp.data && ['eas-cli', 'outdated version'].every(substr => resp.data.includes(substr)))
+    throw new Error('Your version of eas-cli is out of date. Please update before continuing.')
+
   isObj(resp) &&
     format === 'json' &&
     opts.exec &&
